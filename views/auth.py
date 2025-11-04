@@ -1,9 +1,11 @@
+
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user
 from models.users import User
 from extensions import db, mail
 from utils.token_utils import generate_token, confirm_token
 from flask_mail import Message
+
 
 def login():
     if request.method == 'POST':
@@ -25,55 +27,57 @@ def logout():
     flash('Você foi desconectado.', 'info')
     return redirect(url_for('auth.login'))
 
-
 def forgot_password():
     if request.method == 'POST':
         email = request.form.get('email')
+        if not email:
+            flash('Informe um e-mail válido.', 'warning')
+            return render_template('auth/forgot_password.html')
+
         user = User.query.filter_by(email=email).first()
-        if user:
-            token = generate_token(email)
-            reset_url = url_for('auth.reset_password', token=token, _external=True)
-            msg = Message(
-                subject='Redefinição de senha',
-                recipients=[email],
-                body=f'Clique no link para redefinir sua senha: {reset_url}'
-            )
+        if not user:
+            flash('Se o e-mail existir, enviaremos um link de redefinição.', 'info')
+            return redirect(url_for('auth.login'))
+
+        token = generate_token(email)
+        reset_url = url_for('auth.reset_password', token=token, _external=True)
+
+        msg = Message(
+            subject='Redefinição de senha',
+            recipients=[email],
+            body=f'Use o link para redefinir sua senha: {reset_url}\nEste link expira em 1 hora.'
+        )
+        try:
             mail.send(msg)
-            flash(f'Link de redefinição enviado para {email}.', 'info')
-        else:
-            flash('E-mail não encontrado.', 'danger')
-        return redirect(url_for('auth.forgot_password'))
+        except Exception:
+            flash('Não foi possível enviar o e-mail no momento.', 'danger')
+            return render_template('auth/forgot_password.html')
+
+        flash('Se o e-mail existir, enviaremos um link de redefinição.', 'info')
+        return redirect(url_for('auth.login'))
+
     return render_template('auth/forgot_password.html')
 
-
-def reset_password(token=None):
-    if not token:
-        flash('Token ausente ou inválido.', 'danger')
-        return redirect(url_for('auth.forgot_password'))
+def reset_password(token):
     email = confirm_token(token)
     if not email:
-        flash('Token expirado ou inválido.', 'danger')
+        flash('Link inválido ou expirado.', 'danger')
         return redirect(url_for('auth.forgot_password'))
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        flash('Usuário não encontrado.', 'danger')
-        return redirect(url_for('auth.forgot_password'))
+
     if request.method == 'POST':
-        password = request.form.get('password')
-        if password:
-            user.set_password(password)
-            db.session.commit()
-            flash('Senha redefinida com sucesso!', 'success')
-            return redirect(url_for('auth.login'))
-        else:
-            flash('Informe uma nova senha.', 'danger')
-    return render_template('auth/reset_password.html')
+        new_password = request.form.get('password')
+        if not new_password:
+            flash('Informe uma nova senha.', 'warning')
+            return render_template('auth/reset_password.html', token=token)
 
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash('Usuário não encontrado.', 'danger')
+            return redirect(url_for('auth.forgot_password'))
 
-class AuthViews:
-    login = staticmethod(login)
-    logout = staticmethod(logout)
-    forgot_password = staticmethod(forgot_password)
-    reset_password = staticmethod(reset_password)
+        user.set_password(new_password)
+        db.session.commit()
+        flash('Senha redefinida com sucesso. Faça login.', 'success')
+        return redirect(url_for('auth.login'))
 
-auth = AuthViews
+    return render_template('auth/reset_password.html', token=token)

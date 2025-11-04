@@ -1,0 +1,15 @@
+
+*# Ambiente virtual
+aula/
+venv/
+venv_giovanna/
+.env
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.DS_Store
+Thumbs.db
+

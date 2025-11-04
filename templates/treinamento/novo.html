@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Novo Treinamento</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('treinamento.novo') }}">
+        <div>
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
+        </div>
+
+        <div>
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" required></textarea>
+        </div>
+
+        <div>
+            <label for="carga_horaria">Carga Horária (horas):</label>
+            <input type="number" id="carga_horaria" name="carga_horaria" required>
+        </div>
+
+        <div>
+            <label for="data_inicio">Data de Início:</label>
+            <input type="date" id="data_inicio" name="data_inicio" required>
+        </div>
+
+        <div>
+            <label for="data_fim">Data de Término:</label>
+            <input type="date" id="data_fim" name="data_fim" required>
+        </div>
+
+        <div>
+            <button type="submit">Criar Treinamento</button>
+            <a href="{{ url_for('treinamento.listar') }}">Cancelar</a>
+        </div>
+    </form>
+{% endblock %}

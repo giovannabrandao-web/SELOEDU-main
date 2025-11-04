@@ -1,19 +1,23 @@
 from flask import Blueprint
-from views.auth import auth as auth_view
+from views import auth as auth_views
 
-# 1. DEFINIÇÃO DO BLUEPRINT
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
+auth_bp = Blueprint('auth', __name__, template_folder='templates')
 
-# 2. REGISTRO MANUAL DAS ROTAS
 
-# Rota de Login: /auth/login
-auth_bp.route("/login", endpoint="login", methods=["GET", "POST"])(auth_view.login)
+@auth_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    return auth_views.login()
 
-# Rota de Logout: /auth/logout
-auth_bp.route("/logout", endpoint="logout", methods=["GET"])(auth_view.logout)
 
-# Rota de Recovery: /auth/recovery
-auth_bp.route("/forgot_password", endpoint="forgot_password", methods=["GET", "POST"])(auth_view.forgot_password)
+@auth_bp.route('/logout')
+def logout():
+    return auth_views.logout()
 
-# Rota de Reset Password: /auth/reset_password/<token>
-auth_bp.route("/reset_password/<token>", endpoint="reset_password", methods=["GET", "POST"])(auth_view.reset_password)
+@auth_bp.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    return auth_views.forgot_password()
+
+@auth_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    return auth_views.reset_password(token)
+

@@ -6,19 +6,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
 </head>
 <body>
+    {% if current_user.is_authenticated %}
     <header>
-        {% if current_user.is_authenticated %}
-            <nav>
-                <a href="{{ url_for('users.dashboard') }}">Dashboard</a> |
-                <a href="{{ url_for('users.index') }}">Usuários</a> |
-                <a href="{{ url_for('users.atualizar_perfil') }}">Perfil</a> |
-                <a href="{{ url_for('auth.logout') }}">Sair</a>
-            </nav>
-        {% endif %}
+        <nav>
+            <a href="{{ url_for('users.dashboard') }}">Dashboard</a> |
+            <a href="{{ url_for('users.index') }}">Usuários</a> |
+            <a href="{{ url_for('treinamento.listar') }}">Treinamentos</a> |
+            <a href="{{ url_for('users.profile') }}">Editar perfil</a> |
+            <a href="{{ url_for('auth.logout') }}">Sair</a>
+        </nav>
     </header>
+    {% endif %}
 
     <main>
-        {% block messages %}{% endblock %}
+        <!-- Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Conteúdo específico da página -->
         {% block content %}{% endblock %}
     </main> 
 
