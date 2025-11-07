@@ -6,6 +6,7 @@ body {
     background-color: #f5f7fa;
     color: #333;
     line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
 /* ======= Cabeçalho e Navegação ======= */
@@ -13,16 +14,20 @@ header {
     background-color: #ffffff;
     padding: 15px 30px;
     border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 header h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #2c3e50;
     margin: 0;
+    font-weight: 600;
 }
 
 header nav a {
@@ -30,7 +35,7 @@ header nav a {
     text-decoration: none;
     color: #007bff;
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 header nav a:last-child {
@@ -39,6 +44,7 @@ header nav a:last-child {
 
 header nav a:hover {
     color: #0056b3;
+    transform: translateY(-1px);
 }
 
 /* ======= Títulos ======= */
@@ -46,6 +52,7 @@ h1, h2 {
     color: #2c3e50;
     margin-top: 20px;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 /* ======= Tabelas ======= */
@@ -54,27 +61,28 @@ table {
     border-collapse: collapse;
     margin-top: 25px;
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 th {
     background-color: #f0f4f8;
     color: #333;
     text-align: left;
-    padding: 12px;
+    padding: 12px 15px;
     font-weight: 600;
     border-bottom: 2px solid #ddd;
 }
 
 td {
-    padding: 12px;
+    padding: 12px 15px;
     border-bottom: 1px solid #eee;
 }
 
 tr:hover {
     background-color: #f9fbfd;
+    transition: background-color 0.2s ease;
 }
 
 /* ======= Botões ======= */
@@ -88,13 +96,104 @@ button,
     border-radius: 6px;
     text-decoration: none;
     font-weight: 500;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
 button:hover,
 .btn-primary:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ======= Layout principal ======= */
+.layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+}
+
+/* ======= Sidebar ======= */
+aside {
+    background-color: #f3f4f6;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid #ddd;
+}
+
+aside h2 {
+    margin-bottom: 10px;
+    text-align: left;
+    color: #4f00ff;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* ======= Navegação lateral ======= */
+aside nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside nav li {
+    margin: 12px 0;
+}
+
+aside nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 8px 10px;
+    border-radius: 6px;
+    display: block;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+aside nav a:hover {
+    background-color: #e8e9ff;
+    color: #4f00ff;
+}
+
+/* ======= Rodapé da sidebar ======= */
+.sidebar-footer {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-size: 14px;
+    margin-top: auto;
+    color: #555;
+}
+
+.sidebar-footer p {
+    margin: 2px 0;
+}
+
+.sidebar-footer ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.sidebar-footer li {
+    margin: 6px 0;
+}
+
+.sidebar-footer a {
+    text-decoration: none;
+    color: #4f00ff;
+    transition: color 0.2s ease;
+}
+
+.sidebar-footer a:hover {
+    text-decoration: underline;
+    color: #3200b8;
+}
+
+/* ======= Conteúdo principal ======= */
+main {
+    padding: 25px;
 }
 
 /* ======= Responsividade ======= */
@@ -106,11 +205,28 @@ button:hover,
     header {
         flex-direction: column;
         align-items: flex-start;
+        text-align: left;
     }
 
     header nav a {
         display: block;
         margin: 5px 0;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    aside {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    aside nav ul {
+        display: flex;
+        gap: 10px;
     }
 
     table, th, td {

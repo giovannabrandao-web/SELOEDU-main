@@ -2,6 +2,7 @@
 *# Ambiente virtual
 aula/
 venv/
+.venv
 venv_giovanna/
 .env
 

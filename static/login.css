@@ -13,36 +13,44 @@ body {
   align-items: center;
   background: linear-gradient(135deg, #007bff, #6c63ff);
   color: #333;
+  animation: fadeInBody 0.6s ease-in-out;
 }
 
 /* ===== Container de Login ===== */
 .login-container {
   background: #ffffff;
-  padding: 40px 35px;
-  border-radius: 14px;
+  padding: 45px 38px;
+  border-radius: 16px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.6s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
 }
 
 .login-container h1 {
-  margin-bottom: 25px;
+  margin-bottom: 28px;
   color: #222;
-  font-size: 1.8rem;
-  letter-spacing: 0.5px;
+  font-size: 1.9rem;
+  letter-spacing: 0.6px;
+  font-weight: 700;
 }
 
 /* ===== Campos do formulário ===== */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
   font-weight: 600;
   color: #444;
   font-size: 0.95rem;
@@ -50,24 +58,24 @@ body {
 
 .form-group input {
   width: 100%;
-  padding: 11px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .form-group input:focus {
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 0 7px rgba(0, 123, 255, 0.4);
   outline: none;
 }
 
 /* ===== Botão ===== */
 button {
   width: 100%;
-  padding: 12px;
-  background: #007bff;
+  padding: 13px;
+  background: linear-gradient(135deg, #007bff, #5b54f6);
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -75,31 +83,32 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 button:hover {
-  background: #0056b3;
+  background: linear-gradient(135deg, #0056b3, #4b45e0);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4);
+  box-shadow: 0 5px 12px rgba(0, 91, 187, 0.4);
 }
 
 /* ===== Links e texto auxiliar ===== */
 .login-container a {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: 14px;
   color: #007bff;
   text-decoration: none;
   font-size: 0.9rem;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .login-container a:hover {
   color: #0056b3;
   text-decoration: underline;
+  text-shadow: 0 0 3px rgba(0, 91, 187, 0.3);
 }
 
-/* ===== Animação de entrada ===== */
+/* ===== Animações ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -111,13 +120,28 @@ button:hover {
   }
 }
 
+@keyframes fadeInBody {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
 /* ===== Responsividade ===== */
 @media (max-width: 480px) {
   .login-container {
-    padding: 30px 20px;
+    padding: 30px 22px;
+    border-radius: 12px;
   }
 
   .login-container h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px;
   }
 }
